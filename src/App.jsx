@@ -45,12 +45,12 @@ function App() {
 
   return (
     <>
-      <div className=' w-[30%] max-w-md bg-gray-600 mx-auto my-2 px-4 py-3 my-8  rounded-md shadow text-orange-500' >
+      <div className=' w-auto max-w-md bg-gray-600 mx-auto px-4 py-3 my-8   rounded-md shadow text-orange-500' >
         <h1 className='text-white text-center my-3 text-2xl'>
           Password
         </h1>
 
-        <div className='flex md:flex-col  shadow rounded-lg overflow-hidden  my-4'>
+        <div className='flex lg:flex-row   shadow rounded-lg overflow-hidden  my-4'>
           <input
             type="text"
             value={password}
@@ -66,9 +66,9 @@ function App() {
           </button>
         </div>
 
-        <div className=' flex md:flex-col   text-sm gap-x-2'>
+        <div className='flex-col lg:flex-row   text-sm gap-x-2'>
 
-          <div className='flex item-center gap-x-1'>
+          <div className='  lg:flex-row  flex-col item-center gap-x-1'>
             <input
               type="range"
               value={length}
@@ -80,7 +80,7 @@ function App() {
               }}
             />
             <label
-              className='px-1 pr-2'>
+              className='px-1 pr-2 mb-2 '>
               Length : {length}
             </label>
           </div>
