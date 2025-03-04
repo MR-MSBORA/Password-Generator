@@ -1,98 +1,124 @@
-import { useState, useCallback, useEffect, useRef } from 'react'
-
-
-
+import { useCallback, useState, useEffect, useRef } from 'react'
+import './App.css'
 function App() {
-  const [length, setLength] = useState(8)
-  const [numberAllowed, setNumberAllowed] = useState(false);
-  const [charAllowed, setCharAllowed] = useState(false)
-  const [password, setPassword] = useState("")
+  const [count, setCount] = useState(0)
+  const [length, setlength] = useState(8)
+  const [number, setnumber] = useState(false)
+  const [character, setcharacter] = useState(false)
+  const [password, setpassword] = useState("")
 
-  //useRef hook
-  const passwordRef = useRef(null)
+
+  const passwordRef = useRef(null) //SPECIAL HOOK USED FOR ADDING OPTIMIZATION IN  CODE FOR COPYING THE PASSWORD 
 
   const passwordGenerator = useCallback(() => {
     let pass = ""
     let str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-    if (numberAllowed) str += "0123456789"
-    if (charAllowed) str += "!@#$%^&*-_+=[]{}~`"
 
-    for (let i = 1; i <= length; i++) {
+    if (number) {
+      str += "0123456789"
+    }
+    if (character) { str += "!#$%^&*?|*~" }
+
+    for (let i = 0; i <= length; i++) {
       let char = Math.floor(Math.random() * str.length + 1)
       pass += str.charAt(char)
-      
     }
+    setpassword(pass)
+  }, [length, number, character, setpassword])
 
-    setPassword(pass)
 
-
-  }, [length, numberAllowed, charAllowed, setPassword])
-
-  const copyPasswordToClipboard = useCallback(() => {
-    passwordRef.current?.select();
-    passwordRef.current?.setSelectionRange(0, 999);
-    window.navigator.clipboard.writeText(password)
+  const copyclip = useCallback(() => {
+    passwordRef.current?.select(); //ADD OPTIMIZATION BY HIGHLIGHTING COPIED TEXT & to change the HIGHLIGHT COLOR USE SELECTION: IN SELECTED TAG
+  //  passwordRef.current?.setSelectionRange(0,3); //USED TO SELECT SPECIFIED NUMBER OF CHARACTER FROM THE PASSWORD
+    window.navigator.clipboard.writeText(password)  //USED TO COPY PASSWORD 
   }, [password])
 
   useEffect(() => {
     passwordGenerator()
-  }, [length, numberAllowed, charAllowed, passwordGenerator])
+  }, [length, number, character, passwordGenerator])
+
+
+
+
+
+
+
   return (
-    
-    <div className="w-full max-w-md mx-auto shadow-md rounded-lg px-4 py-3 my-8 bg-gray-800 text-orange-500">
-      <h1 className='text-white text-center my-3'>Password generator</h1>
-    <div className="flex shadow rounded-lg overflow-hidden mb-4">
-        <input
+    <>
+      <div className=' w-fit max-w-md bg-gray-600 mx-auto px-4 py-3 my-8   rounded-md shadow text-orange-500' >
+        <h1 className='text-white text-center my-3 text-2xl'>
+          Password
+        </h1>
+
+        <div className='flex   shadow rounded-lg overflow-hidden  my-4'>
+          <input
             type="text"
             value={password}
-            className="outline-none w-full py-1 px-3"
-            placeholder="Password"
+            placeholder='Password'
+            className='outline-none w-full py-1 px-3 bg-white selection:bg-blue-300'
             readOnly
-            ref={passwordRef}
-        />
-        <button
-        onClick={copyPasswordToClipboard}
-        className='outline-none bg-blue-700 text-white px-3 py-0.5 shrink-0'
-        >copy</button>
-        
-    </div>
-    <div className='flex text-sm gap-x-2'>
-      <div className='flex items-center gap-x-1'>
-        <input 
-        type="range"
-        min={6}
-        max={100}
-        value={length}
-         className='cursor-pointer'
-         onChange={(e) => {setLength(e.target.value)}}
-          />
-          <label>Length: {length}</label>
-      </div>
-      <div className="flex items-center gap-x-1">
-      <input
-          type="checkbox"
-          defaultChecked={numberAllowed}
-          id="numberInput"
-          onChange={() => {
-              setNumberAllowed((prev) => !prev);
-          }}
-      />
-      <label htmlFor="numberInput">Numbers</label>
-      </div>
-      <div className="flex items-center gap-x-1">
-          <input
-              type="checkbox"
-              defaultChecked={charAllowed}
-              id="characterInput"
-              onChange={() => {
-                  setCharAllowed((prev) => !prev )
+            ref={passwordRef} />
+          <button
+            className='px-4 py-1 bg-blue-500 uppercase outline-none shrink-0 text-white hover:bg-blue-300 active:bg-blue-300 active:text-black font-bold'
+            onClick={copyclip}
+          >
+            copy
+          </button>
+        </div>
+
+        <div className='flex   text-sm gap-x-2'>
+
+          <div className=' flex item-center gap-x-1'>
+            <input
+              type="range"
+              value={length}
+              min={6}
+              max={100}
+              className='cursor-pointer outline-none'
+              onChange={(e) => {
+                setlength(e.target.value)
               }}
-          />
-          <label htmlFor="characterInput">Characters</label>
+            />
+            <label
+              className='px-1 pr-2 mb-2 '>
+              Length : {length}
+            </label>
+          </div>
+
+          <div className='flex item-center gap-x-1'>
+            <input
+              type="checkbox"
+              defaultChecked={number}
+              onChange={() => {
+                setnumber((prev) => !prev)
+              }}
+            />
+            <label
+              htmlFor='numberInput'
+              className='px-1 pr-2'>
+              Number
+            </label>
+          </div>
+
+          <div className='flex item-center gap-x-1'>
+            <input
+              type="checkbox"
+              defaultChecked={character}
+              id='characterInput'
+              onChange={() => {
+                setcharacter((prev) => !prev)
+              }}
+            />
+            <label
+              htmlFor='characterInput'
+              className='px-1 pr-2'>
+              Character
+            </label>
+          </div>
+
+        </div>
       </div>
-    </div>
-</div>
-    
+    </>
   )
 }
 
