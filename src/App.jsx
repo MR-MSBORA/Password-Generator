@@ -1,124 +1,99 @@
 import { useCallback, useState, useEffect, useRef } from 'react'
 import './App.css'
+
 function App() {
-  const [count, setCount] = useState(0)
-  const [length, setlength] = useState(8)
-  const [number, setnumber] = useState(false)
-  const [character, setcharacter] = useState(false)
-  const [password, setpassword] = useState("")
+  const [length, setLength] = useState(8)
+  const [number, setNumber] = useState(false)
+  const [character, setCharacter] = useState(false)
+  const [password, setPassword] = useState("")
 
-
-  const passwordRef = useRef(null) //SPECIAL HOOK USED FOR ADDING OPTIMIZATION IN  CODE FOR COPYING THE PASSWORD 
+  const passwordRef = useRef(null)
 
   const passwordGenerator = useCallback(() => {
     let pass = ""
     let str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 
-    if (number) {
-      str += "0123456789"
-    }
-    if (character) { str += "!#$%^&*?|*~" }
+    if (number) str += "0123456789"
+    if (character) str += "!#$%^&*?|*~"
 
-    for (let i = 0; i <= length; i++) {
-      let char = Math.floor(Math.random() * str.length + 1)
+    for (let i = 0; i < length; i++) {
+      let char = Math.floor(Math.random() * str.length)
       pass += str.charAt(char)
     }
-    setpassword(pass)
-  }, [length, number, character, setpassword])
+    setPassword(pass)
+  }, [length, number, character])
 
-
-  const copyclip = useCallback(() => {
-    passwordRef.current?.select(); //ADD OPTIMIZATION BY HIGHLIGHTING COPIED TEXT & to change the HIGHLIGHT COLOR USE SELECTION: IN SELECTED TAG
-  //  passwordRef.current?.setSelectionRange(0,3); //USED TO SELECT SPECIFIED NUMBER OF CHARACTER FROM THE PASSWORD
-    window.navigator.clipboard.writeText(password)  //USED TO COPY PASSWORD 
+  const copyToClipboard = useCallback(() => {
+    if (passwordRef.current) {
+      passwordRef.current.select()
+      passwordRef.current.setSelectionRange(0, password.length)
+      document.execCommand("copy")
+    }
   }, [password])
 
   useEffect(() => {
     passwordGenerator()
   }, [length, number, character, passwordGenerator])
 
-
-
-
-
-
-
   return (
-    <>
-      <div className=' w-full max-w-md bg-gray-600 mx-auto px-4 py-3 my-8  rounded-md shadow text-orange-500' >
-        <h1 className='text-white text-center my-3 text-2xl'>
-          Password
-        </h1>
+    <div className="w-full max-w-md bg-gray-700 mx-auto px-4 py-5 my-10 rounded-lg shadow-md text-orange-400">
+      <h1 className="text-white text-center text-2xl font-bold">Password Generator</h1>
 
-        <div className='flex  shadow rounded-lg overflow-hidden  my-2'>
+      <div className="flex items-center shadow-md rounded-lg overflow-hidden my-4">
+        <input
+          type="text"
+          value={password}
+          readOnly
+          ref={passwordRef}
+          className="w-full bg-white text-black px-3 py-2 outline-none truncate"
+          placeholder="Generated Password"
+        />
+        <button
+          className="px-4 py-2 bg-blue-500 text-white font-bold uppercase hover:bg-blue-400 active:bg-blue-600 transition"
+          onClick={copyToClipboard}
+        >
+          Copy
+        </button>
+      </div>
+
+      <div className="flex flex-col space-y-3 text-sm">
+        {/* Length Slider */}
+        <div className="flex items-center space-x-2">
+          <label className="text-white font-medium">Length:</label>
           <input
-            type="text"
-            value={password}
-            placeholder='Password'
-            className='outline-none w-full py-1 px-3 bg-white selection:bg-blue-300'
-            readOnly
-            ref={passwordRef} />
-          <button
-            className='px-3 py-0.5 bg-blue-500 uppercase outline-none shrink-0 text-white hover:bg-blue-300 active:bg-blue-300 active:text-black font-bold'
-            onClick={copyclip}
-          >
-            copy
-          </button>
+            type="range"
+            min={6}
+            max={32}
+            value={length}
+            onChange={(e) => setLength(e.target.value)}
+            className="cursor-pointer"
+          />
+          <span className="text-white">{length}</span>
         </div>
 
-        <div className='flex   text-sm gap-x-2'>
+        {/* Include Numbers */}
+        <div className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            checked={number}
+            onChange={() => setNumber((prev) => !prev)}
+            className="cursor-pointer"
+          />
+          <label className="text-white">Include Numbers</label>
+        </div>
 
-          <div className=' flex item-center gap-x-1 font-xl'>
-            <input
-              type="range"
-              value={length}
-              min={6}
-              max={100}
-              className='cursor-pointer outline-none'
-              onChange={(e) => {
-                setlength(e.target.value)
-              }}
-            />
-            <label
-              className='px-1 pr-2 mb-2 '>
-              Length : {length}
-            </label>
-          </div>
-
-          <div className='flex item-center gap-x-1'>
-            <input
-              type="checkbox"
-              defaultChecked={number}
-              onChange={() => {
-                setnumber((prev) => !prev)
-              }}
-            />
-            <label
-              htmlFor='numberInput'
-              className='px-1 pr-2'>
-              Number
-            </label>
-          </div>
-
-          <div className='flex item-center gap-x-1'>
-            <input
-              type="checkbox"
-              defaultChecked={character}
-              id='characterInput'
-              onChange={() => {
-                setcharacter((prev) => !prev)
-              }}
-            />
-            <label
-              htmlFor='characterInput'
-              className='px-1 pr-2'>
-              Character
-            </label>
-          </div>
-
+        {/* Include Characters */}
+        <div className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            checked={character}
+            onChange={() => setCharacter((prev) => !prev)}
+            className="cursor-pointer"
+          />
+          <label className="text-white">Include Special Characters</label>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
