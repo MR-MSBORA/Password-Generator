@@ -50,7 +50,7 @@ function App() {
           Password
         </h1>
 
-        <div className='flex lg:flex-row   shadow rounded-lg overflow-hidden  my-4'>
+        <div className='flex   shadow rounded-lg overflow-hidden  my-4'>
           <input
             type="text"
             value={password}
@@ -66,9 +66,9 @@ function App() {
           </button>
         </div>
 
-        <div className='flex-col lg:flex-row   text-sm gap-x-2'>
+        <div className='flex   text-sm gap-x-2'>
 
-          <div className='  lg:flex-row  flex-col item-center gap-x-1'>
+          <div className=' flex item-center gap-x-1'>
             <input
               type="range"
               value={length}
