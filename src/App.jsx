@@ -45,12 +45,12 @@ function App() {
 
   return (
     <>
-      <div className=' w-full max-w-md bg-gray-600 mx-auto px-4 py-3 my-8   rounded-md shadow text-orange-500' >
+      <div className=' w-full max-w-md bg-gray-600 mx-auto px-4 py-3 my-8  rounded-md shadow text-orange-500' >
         <h1 className='text-white text-center my-3 text-2xl'>
           Password
         </h1>
 
-        <div className='flex  shadow rounded-lg overflow-hidden  my-4'>
+        <div className='flex  shadow rounded-lg overflow-hidden  my-2'>
           <input
             type="text"
             value={password}
