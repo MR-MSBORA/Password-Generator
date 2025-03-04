@@ -50,7 +50,7 @@ function App() {
           Password
         </h1>
 
-        <div className='flex  shadow rounded-lg overflow-hidden  my-2'>
+        <div className='flex item-center shadow rounded-lg overflow-hidden  my-2'>
           <input
             type="text"
             value={password}
