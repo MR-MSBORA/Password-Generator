@@ -50,7 +50,7 @@ function App() {
           Password
         </h1>
 
-        <div className='flex item-center shadow rounded-lg overflow-hidden  my-2'>
+        <div className='flex  shadow rounded-lg overflow-hidden  my-2'>
           <input
             type="text"
             value={password}
@@ -59,7 +59,7 @@ function App() {
             readOnly
             ref={passwordRef} />
           <button
-            className='px-4 py-1 bg-blue-500 uppercase outline-none shrink-0 text-white hover:bg-blue-300 active:bg-blue-300 active:text-black font-bold'
+            className='px-3 py-0.5 bg-blue-500 uppercase outline-none shrink-0 text-white hover:bg-blue-300 active:bg-blue-300 active:text-black font-bold'
             onClick={copyclip}
           >
             copy
@@ -68,7 +68,7 @@ function App() {
 
         <div className='flex   text-sm gap-x-2'>
 
-          <div className=' flex item-center gap-x-1'>
+          <div className=' flex item-center gap-x-1 font-xl'>
             <input
               type="range"
               value={length}
